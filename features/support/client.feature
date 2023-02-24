@@ -1,54 +1,55 @@
-# Feature: all the features intended for custmor
+Feature: all the features intended for custmor
 
 
-# Background: login as customeer
-# Given I store the raw value { "email" : "rauundom11@email.com", "password": "ranuudom11123" } as payload in scenario scope
-# And I set body to `payload`
-# When I POST to /auth/login
-# Then response code should be 200
-# Then response body should be valid json
-# Then I store the value of body path $.token as authToken in global scope
+Background: login as customeer
+Given I store the raw value { "email" : "rauundom11@email.com", "password": "ranuudom11123" } as payload in scenario scope
+And I set body to `payload`
+When I POST to /auth/login
+Then response code should be 200
+Then response body should be valid json
+Then I store the value of body path $.token as authToken in global scope
 
 
-# Scenario: get product list
-# Given I set token header to `authToken`
-# When I GET /products 
-# Then response code should be 200
-# Then response body should be valid json
-# Then response body should contain products
+Scenario: get product list
+Given I set token header to `authToken`
+When I GET /products 
+Then response code should be 200
+Then response body should be valid json
+Then response body should contain products
 
 
-# Scenario: get a single product
-# Given I set token header to `authToken`
-# When I GET /products/63e5da0f7a7580b6cbbfee3c 
-# Then response code should be 200
-# Then response body should be valid json
-# Then response body should contain product
+Scenario: get a single product
+Given I set token header to `authToken`
+When I GET /products/63e5da0f7a7580b6cbbfee3c 
+Then response code should be 200
+Then response body should be valid json
+Then response body should contain product
 
 
-# Scenario: get the cart
-# Given I set token header to `authToken`
-# When I GET /ecom 
-# Then response code should be 200
-# Then response body should be valid json
-# Then response body should contain cart
+Scenario: get the cart
+Given I set token header to `authToken`
+When I GET /ecom 
+Then response code should be 200
+Then response body should be valid json
+Then response body should contain cart
 
 
-# Scenario: add a product to the cart
-# Given I set token header to `authToken`
-# When I POST to /ecom/63e5da437a7580b6cbbfee3e 
-# Then response code should be 201
-# Then response body should be valid json
-# Then response body should contain cart
+Scenario: add a product to the cart
+Given I set token header to `authToken`
+When I POST to /ecom/63e5da437a7580b6cbbfee3e 
+Then response code should be 201
+Then response body should be valid json
+Then response body should contain cart
 
 
-# Scenario: order a product
-# Given I store the raw value { "address" : "bilaspur", "pin": "493132" } as payload in scenario scope
-# And I set body to `payload`
-# And I set token header to `authToken`
-# When I POST to /ecom/order
-# Then response body should be valid json
-# Then response body should contain message
+Scenario: order a product
+Given I store the raw value { "address" : "bilaspur", "pin": "493132" } as payload in scenario scope
+And I set body to `payload`
+And I set token header to `authToken`
+When I POST to /ecom/order
+Then response code should be 201
+Then response body should be valid json
+Then response body should contain message
 
 
 # Scenario: cancel the orderedproduct
@@ -62,6 +63,59 @@
 # 63f5b05d6af926543b8316ff
 # 63f5e34312a65cdb41836ef1
 # 63f5e49612a65cdb41836eff
+
+
+# <------------------------------------------------------ Edge Cases ------------------------------------------------------>
+
+
+Scenario: get a single product with wrong id
+Given I set token header to `authToken`
+When I GET /products/63e5da0f7a7580b6cbbfee3 
+Then response code should be 400
+Then response body should be valid json
+Then response body should contain message
+
+
+Scenario: cancel the orderedproduct with wrong id
+Given I set token header to `authToken`
+When I DELETE /ecom/cancel/63f5e4fa12a65cdb41836f0
+Then response code should be 400
+
+
+Scenario: order a product without address 
+Given I store the raw value { "pin": "493132" } as payload in scenario scope
+And I set body to `payload`
+And I set token header to `authToken`
+When I POST to /ecom/order
+Then response code should be 400
+Then response body should be valid json
+Then response body should contain message
+
+
+Scenario: order a product without pin 
+Given I store the raw value { "address" : "bilaspur" } as payload in scenario scope
+And I set body to `payload`
+And I set token header to `authToken`
+When I POST to /ecom/order
+Then response code should be 400
+Then response body should be valid json
+Then response body should contain message
+
+
+Scenario: order a product without address and pin
+Given I set token header to `authToken`
+When I POST to /ecom/order
+Then response code should be 400
+Then response body should be valid json
+Then response body should contain message
+
+
+Scenario: add a product to the cart with incorrect product id
+Given I set token header to `authToken`
+When I POST to /ecom/63e5da437a7580b6cbbfee 
+Then response code should be 400
+Then response body should be valid json
+Then response body should contain message
 
 
 
