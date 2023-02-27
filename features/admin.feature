@@ -1,37 +1,37 @@
-Feature: admin can add update and delete products
+# Feature: admin can add update and delete products
 
-Background: login as admin
-Given I store the raw value { "email" : "adityayarize@gmail.com", "password": "12345" } as payload in scenario scope
-And I set body to `payload`
-When I POST to /auth/login
-Then response code should be 200
-Then response body should be valid json
-Then I store the value of body path $.token as authToken in global scope
-
-
-Scenario: add a new product
-And I store the raw value { "name" : "name", "desc": "good test product", "price": 123 } as payload in scenario scope
-And I set body to `payload`
-And I set token header to `authToken`
-When I POST to /products
-Then response body should be valid json
-Then response code should be 201
-Then response body should contain product
-Then value of scenario variable `payload.name` should be `$.product.name`
-Then value of scenario variable `payload.desc` should be `$.product.desc`
-Then value of scenario variable `payload.price` should be `$.product.price`
+# Background: login as admin
+# Given I store the raw value { "email" : "adityayarize@gmail.com", "password": "12345" } as payload in scenario scope
+# And I set body to `payload`
+# When I POST to /auth/login
+# Then response code should be 200
+# Then response body should be valid json
+# Then I store the value of body path $.token as authToken in global scope
 
 
-Scenario: update an existing product
-Given I store the raw value { "name" : "updated product", "desc": "updated good test product", "price": 1123 } as payload in scenario scope
-And I set body to `payload`
-And I set token header to `authToken`
-When I PATCH /products/63f468d449bb65f978fe53a7 
-Then response code should be 200
-Then response body should contain product
-Then value of scenario variable `payload.name` should be `$.product.name`
-Then value of scenario variable `payload.desc` should be `$.product.desc`
-Then value of scenario variable `payload.price` should be `$.product.price`
+# Scenario: add a new product
+# And I store the raw value { "name" : "name", "desc": "good test product", "price": 123 } as payload in scenario scope
+# And I set body to `payload`
+# And I set token header to `authToken`
+# When I POST to /products
+# Then response body should be valid json
+# Then response code should be 201
+# Then response body should contain product
+# Then value of scenario variable `payload.name` should be `$.product.name`
+# Then value of scenario variable `payload.desc` should be `$.product.desc`
+# Then value of scenario variable `payload.price` should be `$.product.price`
+
+
+# Scenario: update an existing product
+# Given I store the raw value { "name" : "updated product", "desc": "updated good test product", "price": 1123 } as payload in scenario scope
+# And I set body to `payload`
+# And I set token header to `authToken`
+# When I PATCH /products/63f468d449bb65f978fe53a7 
+# Then response code should be 200
+# Then response body should contain product
+# Then value of scenario variable `payload.name` should be `$.product.name`
+# Then value of scenario variable `payload.desc` should be `$.product.desc`
+# Then value of scenario variable `payload.price` should be `$.product.price`
 
 
 # # Scenario: delete an existing product

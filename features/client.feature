@@ -1,21 +1,21 @@
-# Feature: all the features intended for custmor
+Feature: all the features intended for custmor
 
 
-# Background: login as customeer
-# Given I store the raw value { "email" : "rauundom11@email.com", "password": "ranuudom11123" } as payload in scenario scope
-# And I set body to `payload`
-# When I POST to /auth/login
-# Then response code should be 200
-# Then response body should be valid json
-# Then I store the value of body path $.token as authToken in global scope
+Background: login as customeer
+Given I store the raw value { "email" : "rauundom11@email.com", "password": "ranuudom11123" } as payload in scenario scope
+And I set body to `payload`
+When I POST to /auth/login
+Then response code should be 200
+Then response body should be valid json
+Then I store the value of body path $.token as authToken in global scope
 
 
-# Scenario: get product list
-# Given I set token header to `authToken`
-# When I GET /products 
-# Then response code should be 200
-# Then response body should be valid json
-# Then response body should contain products
+Scenario: get product list
+Given I set token header to `authToken`
+When I GET /products 
+Then response code should be 200
+Then response body should be valid json
+Then response body should contain products
 
 
 # Scenario: get a single product
